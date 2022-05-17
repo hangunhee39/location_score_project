@@ -10,6 +10,9 @@ import retrofit2.create
 
 object Repository {
 
+    suspend fun getSearchResult(keyword: String, longitude: String, latitude: String) =
+        kakaoSearchApiService.keywordSearch(keyword,longitude,latitude).body()?.documents
+
     private val kakaoSearchApiService: KakaoSearchKeywordService by lazy {
         Retrofit.Builder()
             .baseUrl(Url.KAKAO_API_BASE_URL)

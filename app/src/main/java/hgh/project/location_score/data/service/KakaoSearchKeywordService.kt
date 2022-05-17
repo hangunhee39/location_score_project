@@ -1,6 +1,8 @@
 package hgh.project.location_score.data.service
 
 import hgh.project.location_score.BuildConfig
+import hgh.project.location_score.data.model.SearchResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
@@ -13,5 +15,5 @@ interface KakaoSearchKeywordService {
         @Query("query") query: String,
         @Query("x") x: String,
         @Query("y") y: String
-    )
+    ): Response<SearchResponse>
 }
