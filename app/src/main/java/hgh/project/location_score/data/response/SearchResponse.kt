@@ -1,4 +1,4 @@
-package hgh.project.location_score.data.model
+package hgh.project.location_score.data.response
 
 
 import com.google.gson.annotations.SerializedName

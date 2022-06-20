@@ -1,7 +1,7 @@
-package hgh.project.location_score.data.service
+package hgh.project.location_score.data.api
 
 import hgh.project.location_score.BuildConfig
-import hgh.project.location_score.data.model.SearchResponse
+import hgh.project.location_score.data.response.SearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers

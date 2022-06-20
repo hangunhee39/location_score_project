@@ -1,4 +1,4 @@
-package hgh.project.location_score.data
+package hgh.project.location_score.data.api
 
 object Url {
 

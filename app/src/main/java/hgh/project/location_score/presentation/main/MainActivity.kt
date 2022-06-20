@@ -1,9 +1,8 @@
-package hgh.project.location_score
+package hgh.project.location_score.presentation.main
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -12,34 +11,31 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.google.android.gms.tasks.CancellationTokenSource
-import hgh.project.location_score.data.Repository
 import hgh.project.location_score.databinding.ActivityMainBinding
-import kotlinx.coroutines.*
-import java.lang.Exception
-import kotlin.coroutines.CoroutineContext
+import hgh.project.location_score.presentation.BaseActivity
+import org.koin.android.ext.android.inject
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
+internal class MainActivity : BaseActivity<MainViewModel , ActivityMainBinding>() {
 
-    private val binding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+    override val viewModel by inject<MainViewModel>()
+
+    override fun getViewBinding(): ActivityMainBinding  = ActivityMainBinding.inflate(layoutInflater)
+
+    override fun observeData() {
+        TODO("Not yet implemented")
     }
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var cancellationTokenSource: CancellationTokenSource? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        job = Job()
         fusedLocationProviderClient = getFusedLocationProviderClient(this)
 
-        initView()
+        initViews()
     }
 
-    private fun initView() {
+    private fun initViews() {
         binding.button.setOnClickListener {
             requestLocationPermissions()
         }
@@ -100,15 +96,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource!!.token
         ).addOnSuccessListener { location ->
-            launch(coroutineContext) {
-                try {
-                    withContext(Dispatchers.IO){
-                        Repository.getSearchResult("스타벅스",location.longitude.toString(),location.latitude.toString())
-                    }
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
-            }
+
         }
     }
 
