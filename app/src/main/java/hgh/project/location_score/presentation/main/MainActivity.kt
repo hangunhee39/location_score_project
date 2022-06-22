@@ -15,37 +15,31 @@ import hgh.project.location_score.databinding.ActivityMainBinding
 import hgh.project.location_score.presentation.BaseActivity
 import org.koin.android.ext.android.inject
 
-internal class MainActivity : BaseActivity<MainViewModel , ActivityMainBinding>() {
+internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override val viewModel by inject<MainViewModel>()
 
-    override fun getViewBinding(): ActivityMainBinding  = ActivityMainBinding.inflate(layoutInflater)
+    override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
-    override fun observeData() {
-        TODO("Not yet implemented")
+    override fun observeData() = viewModel.mainStateLiveData.observe(this) {
+        when (it) {
+            is MainState.Uninitialized -> {
+                initViews()
+            }
+        }
     }
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var cancellationTokenSource: CancellationTokenSource? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        fusedLocationProviderClient = getFusedLocationProviderClient(this)
-
-        initViews()
-    }
 
     private fun initViews() {
-        binding.button.setOnClickListener {
-            requestLocationPermissions()
-        }
+        fusedLocationProviderClient = getFusedLocationProviderClient(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         cancellationTokenSource?.cancel()
-
     }
 
     private fun requestLocationPermissions() {
@@ -80,9 +74,9 @@ internal class MainActivity : BaseActivity<MainViewModel , ActivityMainBinding>(
         if (requestCode == REQUEST_ACCESS_LOCATION_PERMISSIONS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED
-            ){
+            ) {
                 getLocationScore()
-            }else{
+            } else {
                 Toast.makeText(this, "권한을 받지 못했습니다.", Toast.LENGTH_LONG).show()
             }
         }
