@@ -26,20 +26,33 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             is MainState.Uninitialized -> {
                 initViews()
             }
+            is MainState.Loading ->{
+
+            }
+            is MainState.Success ->{
+
+            }
         }
     }
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var cancellationTokenSource: CancellationTokenSource? = null
 
-
-    private fun initViews() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         fusedLocationProviderClient = getFusedLocationProviderClient(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         cancellationTokenSource?.cancel()
+    }
+
+
+    private fun initViews()= with(binding) {
+        locationButton.setOnClickListener {
+            requestLocationPermissions()
+        }
     }
 
     private fun requestLocationPermissions() {
@@ -90,6 +103,7 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource!!.token
         ).addOnSuccessListener { location ->
+            viewModel.searchResult(location.latitude.toString(),location.latitude.toString())
 
         }
     }

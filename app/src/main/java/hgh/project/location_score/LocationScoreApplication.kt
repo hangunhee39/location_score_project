@@ -14,11 +14,7 @@ class LocationScoreApplication: Application() {
 
         startKoin {
             androidLogger(
-                if (BuildConfig.DEBUG){
-                    Level.DEBUG
-                }else{
-                    Level.NONE
-                }
+                Level.NONE
             )
             androidContext(this@LocationScoreApplication)
             modules(appModule)
