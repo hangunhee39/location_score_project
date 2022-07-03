@@ -4,10 +4,12 @@ import hgh.project.location_score.data.api.buildHttpClient
 import hgh.project.location_score.data.api.kakaoSearchApiService
 import hgh.project.location_score.data.api.kakaoSearchRetrofit
 import hgh.project.location_score.data.api.provideGsonConverterFactory
+import hgh.project.location_score.data.entity.SearchResult
 import hgh.project.location_score.data.repository.DefaultRepository
 import hgh.project.location_score.data.repository.Repository
 import hgh.project.location_score.domain.GetSearchResultUseCase
 import hgh.project.location_score.presentation.main.MainViewModel
+import hgh.project.location_score.presentation.result.ResultViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -20,6 +22,7 @@ val appModule = module {
 
     //ViewModel
     viewModel { MainViewModel(get()) }
+    viewModel { (result : SearchResult) -> ResultViewModel(result) }
 
     //UseCase
     factory{ GetSearchResultUseCase(get()) }

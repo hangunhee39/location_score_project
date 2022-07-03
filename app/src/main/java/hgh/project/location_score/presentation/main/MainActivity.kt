@@ -2,6 +2,7 @@ package hgh.project.location_score.presentation.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -11,8 +12,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.google.android.gms.tasks.CancellationTokenSource
+import hgh.project.location_score.data.entity.SearchResult
 import hgh.project.location_score.databinding.ActivityMainBinding
 import hgh.project.location_score.presentation.BaseActivity
+import hgh.project.location_score.presentation.result.ResultActivity
 import org.koin.android.ext.android.inject
 
 internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
@@ -26,11 +29,14 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             is MainState.Uninitialized -> {
                 initViews()
             }
-            is MainState.Loading ->{
-
+            is MainState.Loading -> {
+                handleLoading()
             }
-            is MainState.Success ->{
-
+            is MainState.Success -> {
+                handleSuccess(it)
+            }
+            is MainState.Error -> {
+                handleError()
             }
         }
     }
@@ -48,11 +54,24 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
         cancellationTokenSource?.cancel()
     }
 
-
-    private fun initViews()= with(binding) {
+    private fun initViews() = with(binding) {
         locationButton.setOnClickListener {
             requestLocationPermissions()
         }
+    }
+
+    private fun handleLoading() {
+
+    }
+
+    private fun handleSuccess(state: MainState.Success) {
+        startActivity(
+            ResultActivity.newIntent(baseContext, state.result)
+        )
+    }
+
+    private fun handleError() {
+        Toast.makeText(baseContext, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun requestLocationPermissions() {
@@ -103,8 +122,7 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource!!.token
         ).addOnSuccessListener { location ->
-            viewModel.searchResult(location.latitude.toString(),location.latitude.toString())
-
+            viewModel.searchResult(location.latitude.toString(), location.latitude.toString())
         }
     }
 

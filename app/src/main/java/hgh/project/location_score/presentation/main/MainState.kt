@@ -11,4 +11,6 @@ sealed class MainState {
     data class Success(
         val result: SearchResult
     ): MainState()
+
+    object Error: MainState()
 }
