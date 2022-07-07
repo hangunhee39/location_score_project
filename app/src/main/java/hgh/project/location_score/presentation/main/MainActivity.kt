@@ -55,7 +55,7 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
     }
 
     private fun initViews() = with(binding) {
-        locationButton.setOnClickListener {
+        searchButton.setOnClickListener {
             requestLocationPermissions()
         }
     }

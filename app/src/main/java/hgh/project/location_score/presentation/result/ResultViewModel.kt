@@ -10,11 +10,20 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 internal class ResultViewModel(
-    private val result : SearchResult
+    private val result : SearchResult?
 ): BaseViewModel() {
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(ResultState.Loading)
+        result?.let {
+            setState(
+                ResultState.Success(it.resultList,it.score)
+            )
+        } ?: kotlin.run {
+            setState(
+                ResultState.Error
+            )
+        }
     }
 
     private var _resultStateLiveData = MutableLiveData<ResultState>(ResultState.UnInitialized)
@@ -23,7 +32,5 @@ internal class ResultViewModel(
     private fun setState(state: ResultState) {
         _resultStateLiveData.postValue(state)
     }
-
-
 
 }

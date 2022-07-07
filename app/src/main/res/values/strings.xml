@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">location_score</string>
+    <string name="searchButtonText">Test Start</string>
+    <string name="TextResultText">테스트 결과</string>
+    <string name="sharedButtonText">공유하기</string>
+    <string name="restartButtonText">다시하기</string>
 </resources>

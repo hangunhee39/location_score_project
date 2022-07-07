@@ -8,6 +8,7 @@ import hgh.project.location_score.R
 import hgh.project.location_score.data.entity.SearchResult
 import hgh.project.location_score.databinding.ActivityResultBinding
 import hgh.project.location_score.presentation.BaseActivity
+import hgh.project.location_score.presentation.adapter.ResultListAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -20,6 +21,8 @@ internal class ResultActivity : BaseActivity<ResultViewModel, ActivityResultBind
     }
 
     override fun getViewBinding() = ActivityResultBinding.inflate(layoutInflater)
+
+    private val adapter = ResultListAdapter()
 
     companion object {
 
@@ -35,21 +38,22 @@ internal class ResultActivity : BaseActivity<ResultViewModel, ActivityResultBind
         when (it) {
             is ResultState.UnInitialized -> initView()
             is ResultState.Loading -> handleLoading()
-            is ResultState.Success -> handleSuccess()
+            is ResultState.Success -> handleSuccess(it)
             is ResultState.Error -> handleError()
         }
     }
 
-    private fun initView() {
-
+    private fun initView() = with(binding){
+        resultRecyclerView.adapter= adapter
     }
 
     private fun handleLoading() {
 
     }
 
-    private fun handleSuccess() {
-
+    private fun handleSuccess(state: ResultState.Success) {
+        adapter.setListAdapter(state.resultList)
+        binding.score.text = state.score.toString()
     }
 
     private fun handleError() {

@@ -32,25 +32,25 @@ internal class MainViewModel(
         val convenienceStoreResult =getSearchResultUseCase("편의점", x, y)
         score +=(convenienceStoreResult?.documents?.size ?:0)
         convenienceStoreResult?.documents?.forEach {
-           searchList.add(it.placeName ?: "error")
+           searchList.add("(+1)\uD83C\uDF59  "+it.placeName )
         }
         //스타벅스
         val starbucksResult =getSearchResultUseCase("스타벅스", x, y)
-        score +=(starbucksResult?.documents?.size ?:0)
+        score +=(starbucksResult?.documents?.size ?:0)*4
         starbucksResult?.documents?.forEach {
-            searchList.add(it.placeName ?: "error")
+            searchList.add("(+4)☕ "+it.placeName ?: "error")
         }
         //맥도날드
         val mDResult =getSearchResultUseCase("맥도날드", x, y)
-        score +=(mDResult?.documents?.size ?:0)
+        score +=(mDResult?.documents?.size ?:0)*3
         mDResult?.documents?.forEach {
-            searchList.add(it.placeName ?: "error")
+            searchList.add("(+3)\uD83C\uDF54 "+it.placeName ?: "error")
         }
-        //맥도날드
+        //지하철
         val subwayResult =getSearchResultUseCase("지하철", x, y)
-        score +=(subwayResult?.documents?.size ?:0)
+        score +=(subwayResult?.documents?.size ?:0)*2
         subwayResult?.documents?.forEach {
-            searchList.add(it.placeName ?: "error")
+            searchList.add("(+2)\uD83D\uDE8B "+it.placeName ?: "error")
         }
         setState(MainState.Success(SearchResult(
             resultList = searchList,

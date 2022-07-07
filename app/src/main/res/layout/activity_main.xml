@@ -7,18 +7,21 @@
     tools:context=".presentation.main.MainActivity">
 
     <Button
-        android:id="@+id/locationButton"
+        android:id="@+id/searchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
+        android:text="@string/searchButtonText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.8"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/locationTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationButton"
+        app:layout_constraintTop_toBottomOf="@id/searchButton"
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
