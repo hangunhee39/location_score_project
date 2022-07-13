@@ -2,17 +2,19 @@ package hgh.project.location_score.presentation.main
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.google.android.gms.tasks.CancellationTokenSource
-import hgh.project.location_score.data.entity.SearchResult
 import hgh.project.location_score.databinding.ActivityMainBinding
 import hgh.project.location_score.presentation.BaseActivity
 import hgh.project.location_score.presentation.result.ResultActivity
@@ -46,7 +48,8 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fusedLocationProviderClient = getFusedLocationProviderClient(this)
+
+        fusedLocationProviderClient = getFusedLocationProviderClient(this@MainActivity)
     }
 
     override fun onDestroy() {
@@ -122,11 +125,13 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource!!.token
         ).addOnSuccessListener { location ->
-            viewModel.searchResult(location.latitude.toString(), location.latitude.toString())
-        }
+            viewModel.searchResult(location.longitude.toString(), location.latitude.toString())
+       }
     }
+
 
     companion object {
         const val REQUEST_ACCESS_LOCATION_PERMISSIONS = 101
     }
+
 }
