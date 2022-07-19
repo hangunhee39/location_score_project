@@ -29,8 +29,8 @@ val appModule = module {
     single { Dispatchers.IO }
 
     //ViewModel
-    viewModel { MainViewModel(get()) }
-    viewModel { (result : SearchResult) -> ResultViewModel(result) }
+    viewModel { MainViewModel(get(),get(),get()) }
+    viewModel { (result : SearchResult) -> ResultViewModel(result , get())}
 
     //UseCase
     factory{ GetSearchResultUseCase(get()) }

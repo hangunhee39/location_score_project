@@ -70,12 +70,12 @@ dependencies {
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
 
-    //Kakao
-    implementation "com.kakao.sdk:v2-share:2.11.0"
-    implementation "com.kakao.sdk:v2-talk:2.11.0"
-
     // Room library
     implementation "androidx.room:room-runtime:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
+
+    //swipe
+    //noinspection GradleCompatible
+    implementation 'com.android.support:support-v4:30.0.3'
 }

@@ -4,19 +4,17 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Looper
-import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.google.android.gms.tasks.CancellationTokenSource
 import hgh.project.location_score.databinding.ActivityMainBinding
 import hgh.project.location_score.presentation.BaseActivity
+import hgh.project.location_score.presentation.adapter.HistoryListAdapter
 import hgh.project.location_score.presentation.result.ResultActivity
 import org.koin.android.ext.android.inject
 
@@ -26,6 +24,8 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
 
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
+    private val adapter = HistoryListAdapter()
+
     override fun observeData() = viewModel.mainStateLiveData.observe(this) {
         when (it) {
             is MainState.Uninitialized -> {
@@ -34,8 +34,14 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             is MainState.Loading -> {
                 handleLoading()
             }
-            is MainState.Success -> {
+            is MainState.Success ->{
                 handleSuccess(it)
+            }
+            is MainState.SearchLoading -> {
+                handleSearchLoading()
+            }
+            is MainState.SearchSuccess -> {
+                handleSearchSuccess(it)
             }
             is MainState.Error -> {
                 handleError()
@@ -46,9 +52,15 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var cancellationTokenSource: CancellationTokenSource? = null
 
+    private val startResultActivityForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == ResultActivity.RESULT_CODE){
+                viewModel.fetchData()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         fusedLocationProviderClient = getFusedLocationProviderClient(this@MainActivity)
     }
 
@@ -58,23 +70,39 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
     }
 
     private fun initViews() = with(binding) {
+        historyRecyclerView.adapter = adapter
         searchButton.setOnClickListener {
             requestLocationPermissions()
         }
+        swipeRefresh.setOnRefreshListener {
+            viewModel.fetchData()
+        }
     }
 
-    private fun handleLoading() {
+    private fun handleLoading(){
+        binding.swipeRefresh.isRefreshing = true
+    }
+
+    private fun handleSuccess(state: MainState.Success){
+        binding.swipeRefresh.isRefreshing =false
+
+        adapter.setListAdapter(state.historyList) {
+            viewModel.deleteHistory(it)
+        }
+    }
+
+    private fun handleSearchLoading() {
 
     }
 
-    private fun handleSuccess(state: MainState.Success) {
-        startActivity(
-            ResultActivity.newIntent(baseContext, state.result)
+    private fun handleSearchSuccess(state: MainState.SearchSuccess) {
+        startResultActivityForResult.launch(
+            ResultActivity.newIntent(this, state.result)
         )
     }
 
     private fun handleError() {
-        Toast.makeText(baseContext, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun requestLocationPermissions() {
@@ -126,7 +154,7 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             cancellationTokenSource!!.token
         ).addOnSuccessListener { location ->
             viewModel.searchResult(location.longitude.toString(), location.latitude.toString())
-       }
+        }
     }
 
 

@@ -3,14 +3,17 @@ package hgh.project.location_score.presentation.result
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import hgh.project.location_score.data.entity.HistoryEntity
 import hgh.project.location_score.data.entity.SearchResult
+import hgh.project.location_score.domain.AddHistoryUseCase
 import hgh.project.location_score.presentation.BaseViewModel
 import hgh.project.location_score.presentation.main.MainState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 internal class ResultViewModel(
-    private val result : SearchResult?
+    private val result : SearchResult?,
+    val addHistoryUseCase: AddHistoryUseCase
 ): BaseViewModel() {
 
     override fun fetchData(): Job = viewModelScope.launch {
@@ -33,4 +36,7 @@ internal class ResultViewModel(
         _resultStateLiveData.postValue(state)
     }
 
+    fun addHistory(history: HistoryEntity)=viewModelScope.launch{
+        addHistoryUseCase(history)
+    }
 }
