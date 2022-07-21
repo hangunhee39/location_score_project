@@ -1,6 +1,5 @@
 package hgh.project.location_score.data.repository
 
-import android.app.appsearch.SearchResult
 import hgh.project.location_score.data.entity.HistoryEntity
 import hgh.project.location_score.data.response.SearchResponse
 

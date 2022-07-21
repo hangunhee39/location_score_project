@@ -6,7 +6,6 @@ import hgh.project.location_score.data.entity.HistoryEntity
 import hgh.project.location_score.data.response.SearchResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class DefaultRepository(
     private val kaKaoApi : KakaoSearchKeywordService,
@@ -14,7 +13,7 @@ class DefaultRepository(
     private val historyDao: HistoryDao
 ) : Repository {
 
-    override suspend fun getSearchResult(search: String, x:String, y:String): SearchResponse? = withContext(ioDispatcher) {
+    override suspend fun getSearchResult(search: String, x:String, y:String): SearchResponse = withContext(ioDispatcher) {
         val response= kaKaoApi.keywordSearch(search,x ,y)
         return@withContext if (response.isSuccessful){
             response.body()?:throw  RuntimeException("검색 실패(api: null).")

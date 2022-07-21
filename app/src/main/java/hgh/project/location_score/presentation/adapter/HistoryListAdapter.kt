@@ -1,17 +1,11 @@
 package hgh.project.location_score.presentation.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import hgh.project.location_score.R
 import hgh.project.location_score.data.entity.HistoryEntity
 import hgh.project.location_score.databinding.HistoryItemBinding
-import hgh.project.location_score.databinding.ResultItemBinding
 
 class HistoryListAdapter : RecyclerView.Adapter<HistoryListAdapter.HistoryItemHolder>() {
 

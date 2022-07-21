@@ -7,7 +7,6 @@ import hgh.project.location_score.data.entity.HistoryEntity
 import hgh.project.location_score.data.entity.SearchResult
 import hgh.project.location_score.domain.AddHistoryUseCase
 import hgh.project.location_score.presentation.BaseViewModel
-import hgh.project.location_score.presentation.main.MainState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -17,7 +16,6 @@ internal class ResultViewModel(
 ): BaseViewModel() {
 
     override fun fetchData(): Job = viewModelScope.launch {
-        setState(ResultState.Loading)
         result?.let {
             setState(
                 ResultState.Success(it.resultList,it.score)

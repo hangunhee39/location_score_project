@@ -6,15 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".presentation.result.ResultActivity">
 
+    <android.widget.Button
+        android:id="@+id/backButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/testResultText" />
+
     <TextView
         android:id="@+id/testResultText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/bmjua"
         android:gravity="center"
         android:text="@string/TextResultText"
+        android:textColor="@color/gray"
         android:textSize="30sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,17 +34,20 @@
         android:id="@+id/resultRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="40dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/result_item"
+        app:layout_constraintTop_toBottomOf="@id/testResultText"
         tools:itemCount="30"
-        app:layout_constraintTop_toBottomOf="@id/testResultText" />
+        tools:listitem="@layout/result_item" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/bmjua"
+        android:textColor="@color/skyBlue"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/sharedButton"
@@ -41,23 +56,31 @@
         app:layout_constraintTop_toBottomOf="@id/resultRecyclerView"
         tools:text="50 점!" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/sharedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
+        android:background="@drawable/round_corner_10"
+        android:fontFamily="@font/bmjua"
         android:text="@string/sharedButtonText"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/saveButton"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/score" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_corner_10"
+        android:fontFamily="@font/bmjua"
         android:text="@string/restartButtonText"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/sharedButton"

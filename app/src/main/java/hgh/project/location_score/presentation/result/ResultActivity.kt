@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import hgh.project.location_score.R
 import hgh.project.location_score.data.entity.HistoryEntity
 import hgh.project.location_score.data.entity.SearchResult
@@ -42,18 +43,26 @@ internal class ResultActivity : BaseActivity<ResultViewModel, ActivityResultBind
     override fun observeData() = viewModel.resultStateLiveData.observe(this) {
         when (it) {
             is ResultState.UnInitialized -> initView()
-            is ResultState.Loading -> handleLoading()
             is ResultState.Success -> handleSuccess(it)
             is ResultState.Error -> handleError()
         }
     }
 
+    override fun onBackPressed() {
+        setResult(RESULT_CODE)
+        super.onBackPressed()
+    }
+
     private fun initView() = with(binding) {
         resultRecyclerView.adapter = adapter
+        backButton.setOnClickListener {
+            setResult(RESULT_CODE)
+            finish()
+        }
         sharedButton.setOnClickListener {
             val intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "나의 위치 점수는 ${score.text}!! \n 테스트하러 가기")
+                putExtra(Intent.EXTRA_TEXT, "나의 위치 점수는 ${score.text} \n 테스트하러 가기")
                 type = "text/plain"
             }
             startActivity(Intent.createChooser(intent, null))
@@ -63,24 +72,20 @@ internal class ResultActivity : BaseActivity<ResultViewModel, ActivityResultBind
         }
     }
 
-    private fun handleLoading() {
-
-    }
-
     private fun handleSuccess(state: ResultState.Success) {
         adapter.setListAdapter(state.resultList)
         binding.score.text = state.score.toString()
     }
 
     private fun handleError() {
-
+        Toast.makeText(this, "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun showDialog() {
         val layoutInflater = LayoutInflater.from(this)
         val view = layoutInflater.inflate(R.layout.save_dialog, null)
 
-        val alertDialog = AlertDialog.Builder(this)
+        val alertDialog = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setView(view)
             .create()
 
@@ -91,8 +96,8 @@ internal class ResultActivity : BaseActivity<ResultViewModel, ActivityResultBind
         saveButton.setOnClickListener {
             viewModel.addHistory(
                 history = HistoryEntity(
-                    name = nameEditText.text.toString() ?: " ",
-                    score = binding.score.text.toString().toInt() ?: 0
+                    name = nameEditText.text.toString() ,
+                    score = binding.score.text.toString().toInt()
                 )
             )
             setResult(RESULT_CODE)

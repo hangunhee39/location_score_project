@@ -7,10 +7,15 @@
 
     <TextView
         android:id="@+id/nameText"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/bmjua"
         android:padding="8dp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="집" />
@@ -19,19 +24,27 @@
         android:id="@+id/scoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/bmjua"
         android:gravity="center"
+        android:lines="1"
         android:paddingVertical="8dp"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/clearButton"
         app:layout_constraintStart_toEndOf="@id/nameText"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="50" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/clearButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_baseline_clear_24"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

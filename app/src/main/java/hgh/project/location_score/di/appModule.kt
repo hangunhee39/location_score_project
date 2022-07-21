@@ -9,7 +9,6 @@ import hgh.project.location_score.data.db.provideDao
 import hgh.project.location_score.data.entity.SearchResult
 import hgh.project.location_score.data.repository.DefaultRepository
 import hgh.project.location_score.data.repository.Repository
-import hgh.project.location_score.domain.*
 import hgh.project.location_score.domain.AddHistoryUseCase
 import hgh.project.location_score.domain.DeleteHistoryAllUseCase
 import hgh.project.location_score.domain.DeleteHistoryUseCase

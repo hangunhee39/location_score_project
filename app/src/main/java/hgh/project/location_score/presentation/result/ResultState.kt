@@ -4,8 +4,6 @@ sealed class ResultState {
 
     object UnInitialized : ResultState()
 
-    object Loading : ResultState()
-
     data class Success(
       val resultList: List<String> = listOf(),
       val score: Int

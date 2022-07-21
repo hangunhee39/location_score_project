@@ -2,16 +2,21 @@ package hgh.project.location_score.presentation.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.google.android.gms.tasks.CancellationTokenSource
+import hgh.project.location_score.R
 import hgh.project.location_score.databinding.ActivityMainBinding
 import hgh.project.location_score.presentation.BaseActivity
 import hgh.project.location_score.presentation.adapter.HistoryListAdapter
@@ -70,17 +75,33 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
     }
 
     private fun initViews() = with(binding) {
+
         historyRecyclerView.adapter = adapter
         searchButton.setOnClickListener {
-            requestLocationPermissions()
+            if (getGpsState()){
+                requestLocationPermissions()
+                it.apply {
+                    setBackgroundResource(R.drawable.click_round_corner_10)
+                    isClickable = false
+                }
+            }else{
+                Toast.makeText(this@MainActivity,"GPS 켜주세요",Toast.LENGTH_LONG).show()
+                startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
         }
         swipeRefresh.setOnRefreshListener {
             viewModel.fetchData()
         }
     }
 
-    private fun handleLoading(){
-        binding.swipeRefresh.isRefreshing = true
+    private fun handleLoading()=with(binding){
+        searchButton.apply {
+            setBackgroundResource(R.drawable.round_corner_10)
+            isClickable =true
+        }
+        swipeRefresh.isRefreshing = true
+        mainMotionLayout.transitionToStart()
+        UnitGroup.isVisible =true
     }
 
     private fun handleSuccess(state: MainState.Success){
@@ -91,8 +112,9 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
         }
     }
 
-    private fun handleSearchLoading() {
-
+    private fun handleSearchLoading() =with(binding){
+        UnitGroup.isGone =true
+        mainMotionLayout.transitionToEnd()
     }
 
     private fun handleSearchSuccess(state: MainState.SearchSuccess) {
@@ -102,7 +124,7 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
     }
 
     private fun handleError() {
-        Toast.makeText(this, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun requestLocationPermissions() {
@@ -155,6 +177,15 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
         ).addOnSuccessListener { location ->
             viewModel.searchResult(location.longitude.toString(), location.latitude.toString())
         }
+    }
+
+    private fun getGpsState() : Boolean{
+        var gpsEnable =false
+        val manager =getSystemService(LOCATION_SERVICE) as LocationManager
+        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            gpsEnable =true
+        }
+        return gpsEnable
     }
 
 
