@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -79,13 +80,18 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
         historyRecyclerView.adapter = adapter
         searchButton.setOnClickListener {
             if (getGpsState()){
-                requestLocationPermissions()
-                it.apply {
-                    setBackgroundResource(R.drawable.click_round_corner_10)
-                    isClickable = false
+                if (getInternetState()) {
+                    requestLocationPermissions()
+                    it.apply {
+                        setBackgroundResource(R.drawable.click_round_corner_10)
+                        isClickable = false
+                    }
+                }else{
+                    Toast.makeText(this@MainActivity,"데이터를 켜주세요",Toast.LENGTH_LONG).show()
+                    startActivity(Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS))
                 }
             }else{
-                Toast.makeText(this@MainActivity,"GPS 켜주세요",Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity,"GPS를 켜주세요",Toast.LENGTH_LONG).show()
                 startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }
         }
@@ -186,6 +192,16 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             gpsEnable =true
         }
         return gpsEnable
+    }
+
+    private fun getInternetState() :Boolean{
+        var internetEnable = false
+        val manager =getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = manager.activeNetworkInfo
+        if ((networkInfo != null && networkInfo.isConnectedOrConnecting)){
+            internetEnable =true
+        }
+        return internetEnable
     }
 
 

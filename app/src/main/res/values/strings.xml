@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">location_score</string>
+    <string name="app_name">내 위치 점수</string>
     <string name="searchButtonText">Test Start</string>
     <string name="TextResultText">테스트 결과</string>
     <string name="sharedButtonText">공유하기</string>
