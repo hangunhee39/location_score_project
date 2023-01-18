@@ -95,4 +95,14 @@
         app:layout_constraintStart_toStartOf="@id/searchButton"
         app:layout_constraintTop_toTopOf="@id/searchButton" />
 
+    <android.widget.Button
+        android:id="@+id/standardButton"
+        android:background="@drawable/ic_baseline_view_list_24"
+        android:layout_width="36dp"
+        app:layout_constraintStart_toEndOf="@id/searchButton"
+        app:layout_constraintTop_toTopOf="@id/searchButton"
+        app:layout_constraintBottom_toBottomOf="@id/searchButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="36dp"/>
+
 </androidx.constraintlayout.motion.widget.MotionLayout>

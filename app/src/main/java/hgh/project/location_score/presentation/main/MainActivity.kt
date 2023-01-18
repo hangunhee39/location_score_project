@@ -2,11 +2,14 @@ package hgh.project.location_score.presentation.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -97,6 +100,9 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
         }
         swipeRefresh.setOnRefreshListener {
             viewModel.fetchData()
+        }
+        standardButton.setOnClickListener {
+            standardListDialog()
         }
     }
 
@@ -202,6 +208,24 @@ internal class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>()
             internetEnable =true
         }
         return internetEnable
+    }
+
+    @SuppressLint("MissingInflatedId")
+    private fun standardListDialog() {
+        val layoutInflater = LayoutInflater.from(this)
+        val view = layoutInflater.inflate(R.layout.standard_dialog, null)
+
+        val alertDialog = AlertDialog.Builder(this, R.style.CustomAlertDialog)
+            .setView(view)
+            .create()
+
+        val cancelButton = view.findViewById<Button>(R.id.clearButton)
+
+        cancelButton.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
 
