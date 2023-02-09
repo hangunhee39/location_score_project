@@ -62,7 +62,7 @@ internal class ResultActivity : BaseActivity<ResultViewModel, ActivityResultBind
         sharedButton.setOnClickListener {
             val intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "나의 위치 점수는 ${score.text} \n 테스트하러 가기")
+                putExtra(Intent.EXTRA_TEXT, "나의 위치 점수는 ${score.text} \n 테스트하러 가기 : '내 위치점수 - 역세권, 편세권, 맥세권, 스세권'에 대해 알아보세요 - https://play.google.com/store/apps/details?id=hgh.project.location_score")
                 type = "text/plain"
             }
             startActivity(Intent.createChooser(intent, null))
