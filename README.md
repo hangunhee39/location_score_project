@@ -11,4 +11,5 @@
 <p> </p>
 <h3>📂 어플 설명 & 다운로드 </h3>
 <p>우리가 주변에 있으면 좋은 편의점, 지하철, 맥도날드, 스타벅스를 기준으로 편세권, 역세권, 맥세권, 스세권이라고 인터넷에서 불리는 기준으로 나의 위치에 점수를 측정하는 어플입니다. </p>
+<p> - https://play.google.com/store/apps/details?id=hgh.project.location_score </p>
 
