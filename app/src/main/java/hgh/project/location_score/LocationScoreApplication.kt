@@ -1,6 +1,7 @@
 package hgh.project.location_score
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import hgh.project.location_score.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -11,6 +12,7 @@ class LocationScoreApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         startKoin {
             androidLogger(
